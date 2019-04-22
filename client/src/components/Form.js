@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import uuidv1 from "uuid";
 import { addToken } from "../js/actions/index";
+
 function mapDispatchToProps(dispatch) {
   return {
     addToken: token  => dispatch(addToken(token))
@@ -21,13 +22,13 @@ class ConnectedForm extends Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    const { value } = this.state;
+    const { value } = "abc";
     const id = uuidv1();
-    this.props.addToken({ value, id });
-    this.setState({ value: "" });
+    const payload = this.props.addToken({ value, id });
+    this.setState({ value: payload.payload });
   }
   render() {
-    const { value } = this.state;
+    var { value } = this.state;
     return (
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
