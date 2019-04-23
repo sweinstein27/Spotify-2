@@ -12,13 +12,13 @@ function getHashParams() {
   return hashParams;
 }
 
-export function addToken(payload) {
+export function addToken() {
     const params = getHashParams();
     var token = params.access_token;
-    return function(dispatch) {
-      return { payload: token }
-      dispatch({ type: "ADD_TOKEN", payload: token})
-    }
+     return function action(dispatch) {
+       dispatch({ type: "ADD_TOKEN", payload: token})
+       return {token}
+     }
   };
 
  

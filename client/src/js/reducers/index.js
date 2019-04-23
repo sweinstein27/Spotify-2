@@ -1,13 +1,13 @@
 import { ADD_TOKEN } from "../constants/action-types";
 
 const initialState = {
-    tokens: []
+    token: []
   };
 
   function rootReducer(state = initialState, action) {
     if (action.type === ADD_TOKEN) {
       return Object.assign({}, state, {
-        tokens: state.tokens.concat(action.payload)
+        token: state.token.concat(action.payload)
       });
     }
     return state;

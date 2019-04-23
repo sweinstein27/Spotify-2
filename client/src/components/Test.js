@@ -7,15 +7,15 @@ export class Test extends Component {
   constructor() {
     super();
   }
-  componentDidMount() {
-    // calling the new action creator
-    this.props.addToken();
-  }
+//   componentDidMount() {
+//     // calling the new action creator
+//     this.props.addToken();
+//   }
   
   render() {
     return (
       <ul className="list-group list-group-flush">
-        {this.props.tokens.map(el => (
+        {this.props.token.map(el => (
           <li className="list-group-item" key={el.id}>
             {el.value}
           </li>
@@ -26,7 +26,7 @@ export class Test extends Component {
 }
 function mapStateToProps(state) {
   return {
-    tokens: state.tokens
+    token: state.token
   };
 }
 export default connect(

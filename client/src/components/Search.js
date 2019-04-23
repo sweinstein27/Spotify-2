@@ -25,56 +25,136 @@
 
 // export default Search;
 
+// import React, { Component } from "react";
+// import { connect } from "react-redux";
+// import { addToken } from "../js/actions/index";
+
+
+// export class Search extends Component {
+//   constructor() {
+//     super();
+//   }
+
+  // componentDidMount() {
+  //   this.props.addToken();
+  // }
+
+//   getToken(){
+//     debugger
+//   }
+
+//   render() {
+//     return (
+      
+//     //   <ul>
+//     //   {this.props.tokens.map(el => (
+//     //     <li key={el.id}>
+//     //       {el.value}
+//     //     </li>
+//     //   ))}
+//     // </ul>
+//     <div>
+//     <button onClick={() => this.getToken()}>
+//       Get Token
+//     </button>
+//     <div>
+//       Token: {this.props.value}
+//     </div>
+//   </div>
+//     );
+//   }
+// }
+
+
+
+// function mapStateToProps(state) {
+//   return {
+//     tokens: state.tokens
+//   };
+// }
+
+// export default connect(
+//   mapStateToProps,
+//   { addToken }
+// )(Search);
+
+
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
+import $ from 'jquery';
 
+var token
 
 export class Search extends Component {
   constructor() {
     super();
+    this.state = {
+      searchObject: [],
+      query: "q=name:jude&type=track"
+    }
   }
 
-  componentDidMount() {
-    this.props.addToken();
-  }
+  search(){
+    token = "" || this.props.token[0]
+    var query = this.state.query
+    $.ajax({
+      url: "https://api.spotify.com/v1/search?" + `${query}`,
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      type: "GET",
+      contentType: JSON,
+    })
+    .then ((data) => {
+      debugger
+        this.setState({
+            searchObject: data.tracks.items
+        })
+    })
+}
 
-  getToken(){
-    debugger
-  }
 
+  
   render() {
     return (
+      <div>
+        <div>
+          {this.props.token}
+        </div>
+        <div>
+          <button onClick={() => this.search()}>
+            search
+          </button>
+        </div>
+        <div>
+        <ul>
+                {this.state.searchObject.map(object => (
+                  <li>
+                  <h2>
+                    Song Title: {object.name}
+                    <br></br>
+                    Artist: {object.artists[0].name}
+                    <br></br>
+                  </h2>
+                </li>
+                ))}
+                </ul>
+        </div>
+      </div>
       
-    //   <ul>
-    //   {this.props.tokens.map(el => (
-    //     <li key={el.id}>
-    //       {el.value}
-    //     </li>
-    //   ))}
-    // </ul>
-    <div>
-    <button onClick={() => this.getToken()}>
-      Get Token
-    </button>
-  </div>
     );
   }
 }
-
-
-
 function mapStateToProps(state) {
   return {
-    tokens: state.tokens
+    token: state.token
   };
 }
-
 export default connect(
   mapStateToProps,
   { addToken }
 )(Search);
-
 
 
 

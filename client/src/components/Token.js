@@ -2,11 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 
 const mapStateToProps = state => {
-  return { tokens: state.tokens };
+  return { token: state.token };
 };
-const ConnectedToken = ({ tokens }) => (
+const ConnectedToken = ({ token }) => (
   <ul className="list-group list-group-flush">
-    {tokens.map(el => (
+    {token.map(el => (
       <li className="list-group-item" key={el.id}>
         {el.value}
       </li>

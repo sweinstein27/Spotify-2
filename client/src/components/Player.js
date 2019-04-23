@@ -4,6 +4,8 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import $ from 'jquery';
 import SearchList from './SearchList'
 import Search from './Search'
+import { connect } from "react-redux";
+import { addToken } from "../js/actions/index";
 
 
 
@@ -12,18 +14,14 @@ var trackID;
 var ID;
 var trackProgress;
 var searchObject;
-var token
+var token 
 
 
 class Player extends Component {
   constructor(){
     super();
-    const params = this.getHashParams();
-    token = params.access_token;
-    if (token) {
-      spotifyApi.setAccessToken(token);
-      this.saveToken();
-    }
+    // const params = this.getHashParams();
+    // token = params.access_token;
     
     this.state = {
       loggedIn: token ? true : false,
@@ -33,17 +31,10 @@ class Player extends Component {
         bpm: ""
       },
       searchObject: [],
-      selectedSongID: "",
-      token: []
+      selectedSongID: ""
     }
   }
 
-  saveToken() {
-    this.setState({
-      token: token
-    })
-  }
-  
 
   getHashParams() {
     var hashParams = {};
@@ -58,6 +49,8 @@ class Player extends Component {
   }
 
   getNowPlaying(){
+    token = this.props.token[0]
+    spotifyApi.setAccessToken(token)
     spotifyApi.getMyCurrentPlaybackState()
       .then((response) => {
         trackID = response.item.id
@@ -73,6 +66,8 @@ class Player extends Component {
   }
 
   getAudioDetails() {
+    token = this.props.token[0]
+    spotifyApi.setAccessToken(token)
     var Url = "https://api.spotify.com/v1/audio-analysis/" + `${trackID}`
     $.ajax({
       url: Url,
@@ -104,18 +99,23 @@ class Player extends Component {
         }
       })
     })
-    debugger
   }
 
   getPause() {
+    token = this.props.token[0]
+    spotifyApi.setAccessToken(token)
     spotifyApi.pause()
   }
 
   getPlay(){
+    token = this.props.token[0]
+    spotifyApi.setAccessToken(token)
     spotifyApi.play()
   }
 
   me(){
+    token = this.props.token[0]
+    spotifyApi.setAccessToken(token)
     spotifyApi.getMe()
     .then((response) => {
       ID = response.id
@@ -123,14 +123,20 @@ class Player extends Component {
   }
   
   skipSong(){
+    token = this.props.token[0]
+    spotifyApi.setAccessToken(token)
     spotifyApi.skipToNext()
   }
 
   previousSong(){
+    token = this.props.token[0]
+    spotifyApi.setAccessToken(token)
     spotifyApi.skipToPrevious()
   }
 
   seek(){
+    token = this.props.token[0]
+    spotifyApi.setAccessToken(token)
     var newPosition = trackProgress + 30000
     var Url = "https://api.spotify.com/v1/me/player/seek?position_ms=" + `${newPosition}`
     debugger
@@ -173,14 +179,17 @@ class Player extends Component {
 
  
 
-    componentDidMount(){
-        this.search()
-    }
+    // componentDidMount(){
+    //     this.search()
+    // }
   
     
   render() {
     return (
       <div className="App">
+        <div>
+           token: {this.props.token}
+         </div>
         <div>
           Now Playing: { this.state.nowPlaying.name }
         </div>
@@ -240,4 +249,13 @@ class Player extends Component {
   }
 }
 
-export default Player;
+function mapStateToProps(state) {
+    return {
+      token: state.token
+    };
+  }
+  
+  export default connect(
+    mapStateToProps,
+    { addToken }
+  )(Player);
