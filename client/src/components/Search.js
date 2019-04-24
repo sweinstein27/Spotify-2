@@ -91,15 +91,15 @@ export class Search extends Component {
     super();
     this.state = {
       searchObject: [],
-      query: "q=name:jude&type=track"
+      query: "jude"
     }
   }
 
   search(){
     token = "" || this.props.token[0]
-    var query = this.state.query
+    var query = prompt("Please enter track name") || this.state.query
     $.ajax({
-      url: "https://api.spotify.com/v1/search?" + `${query}`,
+      url: "https://api.spotify.com/v1/search?" + "q=name:" + `${query}` + "&type=track",
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -132,6 +132,8 @@ export class Search extends Component {
                 {this.state.searchObject.map(object => (
                   <li>
                   <h2>
+                    <img src={object.album.images[0].url} style={{ height: 150 }}/>
+                    <br></br>
                     Song Title: {object.name}
                     <br></br>
                     Artist: {object.artists[0].name}

@@ -27,10 +27,10 @@ class ConnectedForm extends Component {
     this.setState({ token: event.target.value.value });
   }
   handleSubmit(event) {
+    debugger
     event.preventDefault();
     var { token } = "abc";
     var payload = this.props.addToken({ token });
-    debugger
     this.saveToken(payload)
   }
 

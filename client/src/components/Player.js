@@ -53,17 +53,19 @@ class Player extends Component {
     spotifyApi.setAccessToken(token)
     spotifyApi.getMyCurrentPlaybackState()
       .then((response) => {
+        debugger
         trackID = response.item.id
-        trackProgress = response.progress_ms
+        trackProgress = response.progress_ms*1000
         this.setState({
           nowPlaying: { 
               name: response.item.name, 
-              albumArt: response.item.album.images[0],
-              trackProgress: response.progress_ms
+              albumArt: response.item.album.images[0].url,
+              trackProgress: response.progress_ms/1000
             }
         });
       })
-  }
+      this.getAudioDetails()
+    }
 
   getAudioDetails() {
     token = this.props.token[0]
@@ -194,7 +196,7 @@ class Player extends Component {
           Now Playing: { this.state.nowPlaying.name }
         </div>
         <div>
-          Current Possition: { this.state.nowPlaying.trackProgress}
+          Current Position: { this.state.nowPlaying.trackProgress} seconds
         </div>
         <div>
           Key: { this.state.trackData.key }  
