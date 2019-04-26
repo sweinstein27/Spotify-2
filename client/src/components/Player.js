@@ -15,6 +15,7 @@ var ID;
 var trackProgress;
 var searchObject;
 var token 
+var isPlaying = true;
 
 
 class Player extends Component {
@@ -49,23 +50,30 @@ class Player extends Component {
   }
 
   getNowPlaying(){
+    var delayInMilliseconds = 10000;
+    var counter = 0;
     token = this.props.token[0]
     spotifyApi.setAccessToken(token)
     spotifyApi.getMyCurrentPlaybackState()
-      .then((response) => {
-        debugger
-        trackID = response.item.id
-        trackProgress = response.progress_ms*1000
-        this.setState({
-          nowPlaying: { 
-              name: response.item.name, 
-              albumArt: response.item.album.images[0].url,
-              trackProgress: response.progress_ms/1000
-            }
-        });
-      })
-      this.getAudioDetails()
-    }
+    .then((response) => {
+    trackID = response.item.id
+    trackProgress = response.progress_ms*1000
+    this.setState({
+        nowPlaying: { 
+        name: response.item.name, 
+        albumArt: response.item.album.images[0].url,
+        trackProgress: response.progress_ms/1000
+        }
+    });
+    })
+    this.getAudioDetails()
+    // while (isPlaying = true && counter < 10) {
+    // setTimeout(function() {
+    //     this.getNowPlaying()
+    //     counter++
+    //     }, delayInMilliseconds);
+    // }
+}
 
   getAudioDetails() {
     token = this.props.token[0]
@@ -107,12 +115,14 @@ class Player extends Component {
     token = this.props.token[0]
     spotifyApi.setAccessToken(token)
     spotifyApi.pause()
+    this.getNowPlaying()
   }
 
   getPlay(){
     token = this.props.token[0]
     spotifyApi.setAccessToken(token)
     spotifyApi.play()
+    this.getNowPlaying()
   }
 
   me(){
@@ -128,12 +138,14 @@ class Player extends Component {
     token = this.props.token[0]
     spotifyApi.setAccessToken(token)
     spotifyApi.skipToNext()
+    this.getNowPlaying()
   }
 
   previousSong(){
     token = this.props.token[0]
     spotifyApi.setAccessToken(token)
     spotifyApi.skipToPrevious()
+    this.getNowPlaying()
   }
 
   seek(){
@@ -141,7 +153,6 @@ class Player extends Component {
     spotifyApi.setAccessToken(token)
     var newPosition = trackProgress + 30000
     var Url = "https://api.spotify.com/v1/me/player/seek?position_ms=" + `${newPosition}`
-    debugger
     $.ajax({
     url: Url,
     headers: {
@@ -189,63 +200,78 @@ class Player extends Component {
   render() {
     return (
       <div className="App">
-        <div>
-           token: {this.props.token}
-         </div>
-        <div>
-          Now Playing: { this.state.nowPlaying.name }
+        <div className="SongInfo">
+        {/* <div class="d-flex justify-content-center"> */}
+            <div class="col-sm-12 d-flex justify-content-center">
+            token: {this.props.token}
+            </div>
+            <div class="col-sm-12 d-flex justify-content-center">
+            Now Playing: { this.state.nowPlaying.name }
+            </div>
+            <div class="col-sm-12 d-flex justify-content-center">
+            Current Position: { this.state.nowPlaying.trackProgress} seconds
+            </div>
+            <div class="col-sm-12 d-flex justify-content-center">
+            Key: { this.state.trackData.key }  
+            </div>
+            <div class="col-sm-12 d-flex justify-content-center">
+            BPM: { this.state.trackData.bpm } 
+            </div>
+            <div class="col-sm-12 d-flex justify-content-center">
+            <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }}/>
+            </div>
+        {/* </div> */}
         </div>
-        <div>
-          Current Position: { this.state.nowPlaying.trackProgress} seconds
+        <div className="ControlButtons">
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-6 d-flex justify-content-center">
+                <button class="btn btn-default" onClick={() => this.getNowPlaying()}>
+                    Check Now Playing
+                </button>
+            </div>
+            <div class="col-sm-6 d-flex justify-content-center">
+                <button class="btn btn-default" onClick={() => this.getAudioDetails()}>
+                    Audio Details
+                </button>
+            </div>
+            </div>
+            </div>
+            <div class="container-fluid">
+            <div class="row">
+            <div class="col-sm-3 d-flex justify-content-center">
+                <button class="btn btn-default" onClick={() => this.previousSong()}>
+                    Previous Song
+                </button>
+            </div>
+            <div class="col-sm-3 d-flex justify-content-center" >
+                <button class="btn btn-success" onClick={() => this.getPlay()}>
+                    Play
+                </button>
+            </div>
+            <div class="col-sm-3 d-flex justify-content-center">
+                <button class="btn btn-danger" onClick={() => this.getPause()}>
+                    Pause
+                </button>
+            </div>
+            <div class="col-sm-3 d-flex justify-content-center">
+                <button class="btn btn-default" onClick={() => this.skipSong()}>
+                    Next Song
+                </button>
+            </div>
+            {/* <div class="col-sm-2 d-flex justify-content-center">
+                <button class="btn btn-default" onClick={() => this.seek()}>
+                    Seek Forward
+                </button>
+            </div> */}
+            </div>
+            </div>
+            {/* <div>
+                <button onClick={() => this.me()}>
+                    User Info
+                </button>
+            </div> */}
         </div>
-        <div>
-          Key: { this.state.trackData.key }  
-        </div>
-        <div>
-          BPM: { this.state.trackData.bpm } 
-        </div>
-        <div>
-          <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }}/>
-        </div>
-          <button onClick={() => this.getNowPlaying()}>
-            Check Now Playing
-          </button>
-        <div>
-          <button onClick={() => this.getAudioDetails()}>
-            Audio Details
-          </button>
-        </div>
-        <div>
-          <button onClick={() => this.getPlay()}>
-            Play
-          </button>
-        </div>
-        <div>
-          <button onClick={() => this.getPause()}>
-            Pause
-          </button>
-        </div>
-        <div>
-          <button onClick={() => this.skipSong()}>
-            Next Song
-          </button>
-        </div>
-        <div>
-          <button onClick={() => this.previousSong()}>
-            Previous Song
-          </button>
-        </div>
-        <div>
-          <button onClick={() => this.seek()}>
-            Seek Forward
-          </button>
-        </div>
-        <div>
-          <button onClick={() => this.me()}>
-            User Info
-          </button>
-        </div>
-        
       </div>
     );
   }

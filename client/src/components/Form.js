@@ -4,6 +4,8 @@ import uuidv1 from "uuid";
 import { addToken } from "../js/actions/index";
 import { Search } from "./Search";
 
+debugger
+
 function mapDispatchToProps(dispatch) {
   return {
     addToken: token  => dispatch(addToken(token))
@@ -27,20 +29,32 @@ class ConnectedForm extends Component {
     this.setState({ token: event.target.value.value });
   }
   handleSubmit(event) {
-    debugger
     event.preventDefault();
     var { token } = "abc";
     var payload = this.props.addToken({ token });
-    this.saveToken(payload)
+    this.state.tokenValue = payload.token || ""
   }
 
   saveToken(payload){
-    this.setState({ token: payload.payload });
+    this.setState({ tokenValue: payload.token });
+  }
+
+  Login(){
+    var { token } = "abc";
+    var payload = this.props.addToken({ token });
+    this.state.tokenValue = payload.token || ""
   }
 
   render() {
     var { token } = this.state;
     return (
+    <div onLoad={this.Login}>
+    tokenvalue: {this.state.tokenValue}
+    {/* <div>
+        <button onClick={this.Login}>
+            Login
+        </button>
+    </div> */}
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
           <label htmlFor="token">token</label>
@@ -56,9 +70,13 @@ class ConnectedForm extends Component {
           SAVE
         </button>
         <div>
-            <Search token={this.props.value} />
+            {/* <Search token={this.props.value} /> */}
         </div>
       </form>
+        <div>
+            <a href='http://localhost:8888'> Login to Spotify </a>
+        </div>
+    </div>
     );
   }
 }

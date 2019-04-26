@@ -2,24 +2,27 @@ import React from "react";
 import Token from "./Token.js";
 import Form from "./Form.js";
 import Player from "./Player";
-import Search from "./Search"
+import Search from "./Search";
+import SpotifyWebApi from 'spotify-web-api-js';
+
+const spotifyApi = new SpotifyWebApi();
 
 
 function Home() {
   return(
 <div className="app">
   <div>
-          <a href='http://localhost:8888' > Login to Spotify </a>
+          <a href='http://localhost:8888'> Login to Spotify </a>
   </div>
-  <div className="row mt-5">
-    <div className="col-md-4 offset-md-1">
+  <div>
+    <div>
     <Player/>
     </div>
-    <div className="col-md-4 offset-md-1">
+    <div>
     <h2>Add a new Token</h2>
-    <Form />
+    <Form/>
     </div>
-    <div className="col-md-4 offset-md-1">
+    <div>
     <Search/>
     </div>
   </div>

@@ -128,20 +128,20 @@ export class Search extends Component {
           </button>
         </div>
         <div>
-        <ul>
-                {this.state.searchObject.map(object => (
-                  <li>
-                  <h2>
-                    <img src={object.album.images[0].url} style={{ height: 150 }}/>
-                    <br></br>
-                    Song Title: {object.name}
-                    <br></br>
-                    Artist: {object.artists[0].name}
-                    <br></br>
-                  </h2>
-                </li>
-                ))}
-                </ul>
+        <div class="row">
+          {this.state.searchObject.map(object => (
+            <div class="container">
+            <h2>
+              <img src={object.album.images[0].url} style={{ height: 150 }}/>
+              <br></br>
+              Song Title: {object.name}
+              <br></br>
+              Artist: {object.artists[0].name}
+              <br></br>
+            </h2>
+            </div>
+          ))}
+        </div>
         </div>
       </div>
       
