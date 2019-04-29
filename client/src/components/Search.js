@@ -1,90 +1,10 @@
-// import React, { Component } from 'react'
-// import SearchList from './SearchList';
-// import SearchContainer from '../containers/SearchContainer'
-
-// class Search extends Component {
-
-//   state = {
-//     query: "q=Muse&type=track&market=US&limit=10&offset=5"
-//   }
-
-//   handleSubmit = event => {
-//     event.preventDefault()
-//     this.props.search(this.state.query)
-//   }
-
-//   render() {
-//     return(
-//       <div>
-//          <h1>"hi"</h1>
-//       </div>
-//   )
-//   }
-
-// }
-
-// export default Search;
-
-// import React, { Component } from "react";
-// import { connect } from "react-redux";
-// import { addToken } from "../js/actions/index";
-
-
-// export class Search extends Component {
-//   constructor() {
-//     super();
-//   }
-
-  // componentDidMount() {
-  //   this.props.addToken();
-  // }
-
-//   getToken(){
-//     debugger
-//   }
-
-//   render() {
-//     return (
-      
-//     //   <ul>
-//     //   {this.props.tokens.map(el => (
-//     //     <li key={el.id}>
-//     //       {el.value}
-//     //     </li>
-//     //   ))}
-//     // </ul>
-//     <div>
-//     <button onClick={() => this.getToken()}>
-//       Get Token
-//     </button>
-//     <div>
-//       Token: {this.props.value}
-//     </div>
-//   </div>
-//     );
-//   }
-// }
-
-
-
-// function mapStateToProps(state) {
-//   return {
-//     tokens: state.tokens
-//   };
-// }
-
-// export default connect(
-//   mapStateToProps,
-//   { addToken }
-// )(Search);
-
-
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
 import $ from 'jquery';
 
-var token
+var token;
+var href;
 
 export class Search extends Component {
   constructor() {
@@ -93,6 +13,7 @@ export class Search extends Component {
       searchObject: [],
       query: "jude"
     }
+    this.seeSong = this.seeSong.bind(this);
   }
 
   search(){
@@ -114,13 +35,29 @@ export class Search extends Component {
     })
 }
 
+seeSong(event){
+  event.preventDefault();
+  token = "" || this.props.token[0]
+  var url=event.target[0].value
+  $.ajax({
+    url: url,
+    headers: {
+      'Authorization': `Bearer ${token}`,
+    },
+    type: "GET",
+    contentType: JSON,
+  })
+  .then((data) => {
+    debugger
+  })
+}
+
 
   
   render() {
     return (
-      <div>
+      <div class="d-flex justify-content-center">
         <div>
-          {this.props.token}
         </div>
         <div>
           <button onClick={() => this.search()}>
@@ -130,15 +67,17 @@ export class Search extends Component {
         <div>
         <div class="row">
           {this.state.searchObject.map(object => (
-            <div class="container">
-            <h2>
+            <div class="col-sm-3">
+             <h3>
               <img src={object.album.images[0].url} style={{ height: 150 }}/>
               <br></br>
               Song Title: {object.name}
               <br></br>
               Artist: {object.artists[0].name}
               <br></br>
-            </h2>
+              <a href={object.preview_url}>Preview Song</a>
+              <br></br>
+            </h3>
             </div>
           ))}
         </div>

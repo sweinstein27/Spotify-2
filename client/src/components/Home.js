@@ -12,14 +12,13 @@ function Home() {
   return(
 <div className="app">
   <div>
-          <a href='http://localhost:8888'> Login to Spotify </a>
+          <a href='http://localhost:8888' class="text-white bg-dark"> Login to Spotify </a>
   </div>
   <div>
     <div>
     <Player/>
     </div>
     <div>
-    <h2>Add a new Token</h2>
     <Form/>
     </div>
     <div>

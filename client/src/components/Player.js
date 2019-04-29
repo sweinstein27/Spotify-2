@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios'
 import SpotifyWebApi from 'spotify-web-api-js';
 import $ from 'jquery';
-import SearchList from './SearchList'
 import Search from './Search'
 import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
@@ -21,8 +20,6 @@ var isPlaying = true;
 class Player extends Component {
   constructor(){
     super();
-    // const params = this.getHashParams();
-    // token = params.access_token;
     
     this.state = {
       loggedIn: token ? true : false,
@@ -200,11 +197,8 @@ class Player extends Component {
   render() {
     return (
       <div className="App">
-        <div className="SongInfo">
+        <div class="SongInfo text-white">
         {/* <div class="d-flex justify-content-center"> */}
-            <div class="col-sm-12 d-flex justify-content-center">
-            token: {this.props.token}
-            </div>
             <div class="col-sm-12 d-flex justify-content-center">
             Now Playing: { this.state.nowPlaying.name }
             </div>
@@ -218,52 +212,33 @@ class Player extends Component {
             BPM: { this.state.trackData.bpm } 
             </div>
             <div class="col-sm-12 d-flex justify-content-center">
-            <img src={this.state.nowPlaying.albumArt} style={{ height: 150 }}/>
+            <img src={this.state.nowPlaying.albumArt} style={{ height: 250, outerWidth: 250 }}/>
             </div>
         {/* </div> */}
         </div>
         <div className="ControlButtons">
-        <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm-6 d-flex justify-content-center">
-                <button class="btn btn-default" onClick={() => this.getNowPlaying()}>
-                    Check Now Playing
-                </button>
-            </div>
-            <div class="col-sm-6 d-flex justify-content-center">
-                <button class="btn btn-default" onClick={() => this.getAudioDetails()}>
-                    Audio Details
-                </button>
-            </div>
-            </div>
-            </div>
             <div class="container-fluid">
             <div class="row">
-            <div class="col-sm-3 d-flex justify-content-center">
+            <div class="col-lg-3 d-flex justify-content-center">
                 <button class="btn btn-default" onClick={() => this.previousSong()}>
-                    Previous Song
+                <img src="https://image.flaticon.com/icons/svg/149/149113.svg" style={{ height: 150}}/>
                 </button>
             </div>
-            <div class="col-sm-3 d-flex justify-content-center" >
+            <div class="col-lg-3 d-flex justify-content-center" >
                 <button class="btn btn-success" onClick={() => this.getPlay()}>
-                    Play
+                    <img src="https://image.flaticon.com/icons/svg/0/375.svg" style={{ height: 150}}/>
                 </button>
             </div>
-            <div class="col-sm-3 d-flex justify-content-center">
+            <div class="col-lg-3 d-flex justify-content-center">
                 <button class="btn btn-danger" onClick={() => this.getPause()}>
-                    Pause
+                <img src="https://www.flaticon.com/premium-icon/icons/svg/1709/1709943.svg" style={{ height: 150}}/>
                 </button>
             </div>
-            <div class="col-sm-3 d-flex justify-content-center">
+            <div class="col-lg-3 d-flex justify-content-center">
                 <button class="btn btn-default" onClick={() => this.skipSong()}>
-                    Next Song
+                <img src="https://image.flaticon.com/icons/svg/149/149112.svg" style={{ height: 150}}/>
                 </button>
             </div>
-            {/* <div class="col-sm-2 d-flex justify-content-center">
-                <button class="btn btn-default" onClick={() => this.seek()}>
-                    Seek Forward
-                </button>
-            </div> */}
             </div>
             </div>
             {/* <div>

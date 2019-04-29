@@ -48,8 +48,7 @@ class ConnectedForm extends Component {
   render() {
     var { token } = this.state;
     return (
-    <div onLoad={this.Login}>
-    tokenvalue: {this.state.tokenValue}
+    <div onLoad={this.Login} class="d-flex justify-content-center">
     {/* <div>
         <button onClick={this.Login}>
             Login
@@ -57,7 +56,7 @@ class ConnectedForm extends Component {
     </div> */}
       <form onSubmit={this.handleSubmit}>
         <div className="form-group">
-          <label htmlFor="token">token</label>
+          <label htmlFor="token"></label>
           {/* <input
             type="text"
             className="form-control"
@@ -73,9 +72,6 @@ class ConnectedForm extends Component {
             {/* <Search token={this.props.value} /> */}
         </div>
       </form>
-        <div>
-            <a href='http://localhost:8888'> Login to Spotify </a>
-        </div>
     </div>
     );
   }
