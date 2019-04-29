@@ -211,34 +211,32 @@ class Player extends Component {
             <div class="col-sm-12 d-flex justify-content-center">
             BPM: { this.state.trackData.bpm } 
             </div>
-            <div class="col-sm-12 d-flex justify-content-center">
+            <div class="col-sm-12 d-flex justify-content-center mb-md-3">
             <img src={this.state.nowPlaying.albumArt} style={{ height: 250, outerWidth: 250 }}/>
             </div>
         {/* </div> */}
         </div>
-        <div className="ControlButtons">
-            <div class="container-fluid">
+        <div class="btn-group d-flex justify-content-center">
             <div class="row">
             <div class="col-lg-3 d-flex justify-content-center">
                 <button class="btn btn-default" onClick={() => this.previousSong()}>
-                <img src="https://image.flaticon.com/icons/svg/149/149113.svg" style={{ height: 150}}/>
+                <img src="https://image.flaticon.com/icons/svg/149/149113.svg" style={{ height: 50}}/>
                 </button>
             </div>
             <div class="col-lg-3 d-flex justify-content-center" >
                 <button class="btn btn-success" onClick={() => this.getPlay()}>
-                    <img src="https://image.flaticon.com/icons/svg/0/375.svg" style={{ height: 150}}/>
+                    <img src="https://image.flaticon.com/icons/svg/0/375.svg" style={{ height: 50}}/>
                 </button>
             </div>
             <div class="col-lg-3 d-flex justify-content-center">
                 <button class="btn btn-danger" onClick={() => this.getPause()}>
-                <img src="https://www.flaticon.com/premium-icon/icons/svg/1709/1709943.svg" style={{ height: 150}}/>
+                <img src="https://www.flaticon.com/premium-icon/icons/svg/1709/1709943.svg" style={{ height: 50}}/>
                 </button>
             </div>
             <div class="col-lg-3 d-flex justify-content-center">
                 <button class="btn btn-default" onClick={() => this.skipSong()}>
-                <img src="https://image.flaticon.com/icons/svg/149/149112.svg" style={{ height: 150}}/>
+                <img src="https://image.flaticon.com/icons/svg/149/149112.svg" style={{ height: 50}}/>
                 </button>
-            </div>
             </div>
             </div>
             {/* <div>

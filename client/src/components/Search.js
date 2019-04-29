@@ -56,18 +56,18 @@ seeSong(event){
   
   render() {
     return (
-      <div class="d-flex justify-content-center">
-        <div>
-        </div>
-        <div>
-          <button onClick={() => this.search()}>
+      <div>
+        <div class="btn-group d-flex justify-content-center">
+          <button class="btn btn-default  mb-md-3" onClick={() => this.search()}>
             search
           </button>
+          <br>
+          </br>
         </div>
-        <div>
+        <div class="d-flex justify-content-center">
         <div class="row">
           {this.state.searchObject.map(object => (
-            <div class="col-sm-3">
+            <div class="col-sm-3 text-white">
              <h3>
               <img src={object.album.images[0].url} style={{ height: 150 }}/>
               <br></br>
