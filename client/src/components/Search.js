@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
 import $ from 'jquery';
+import form from "./Form";
 
 var token;
 var href;
@@ -16,8 +17,17 @@ export class Search extends Component {
     this.seeSong = this.seeSong.bind(this);
   }
 
+  getToken(){
+    var { token } = "abc";
+    var payload = this.props.addToken({ token });
+    this.setState({
+      token: payload.token
+    })
+  }
+
   search(){
-    token = "" || this.props.token[0]
+    this.getToken()
+    token = this.state.token
     var query = prompt("Please enter track name") || this.state.query
     $.ajax({
       url: "https://api.spotify.com/v1/search?" + "q=name:" + `${query}` + "&type=track",
@@ -28,7 +38,6 @@ export class Search extends Component {
       contentType: JSON,
     })
     .then ((data) => {
-      debugger
         this.setState({
             searchObject: data.tracks.items
         })
@@ -48,7 +57,6 @@ seeSong(event){
     contentType: JSON,
   })
   .then((data) => {
-    debugger
   })
 }
 

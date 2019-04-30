@@ -5,6 +5,7 @@ import $ from 'jquery';
 import Search from './Search'
 import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
+import form from "./Form";
 
 
 
@@ -23,14 +24,16 @@ class Player extends Component {
     
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: '' },
+      nowPlaying: { name: 'Not Checked', albumArt: '', trackProgress: "" },
       trackData: {
         key: "",
         bpm: ""
       },
       searchObject: [],
-      selectedSongID: ""
+      selectedSongID: "",
+      token: []
     }
+    this.getAudioDetails = this.getAudioDetails.bind(this);
   }
 
 
@@ -47,9 +50,8 @@ class Player extends Component {
   }
 
   getNowPlaying(){
-    var delayInMilliseconds = 10000;
-    var counter = 0;
-    token = this.props.token[0]
+    this.getToken()
+    token = this.state.token
     spotifyApi.setAccessToken(token)
     spotifyApi.getMyCurrentPlaybackState()
     .then((response) => {
@@ -59,21 +61,24 @@ class Player extends Component {
         nowPlaying: { 
         name: response.item.name, 
         albumArt: response.item.album.images[0].url,
-        trackProgress: response.progress_ms/1000
+        trackProgress: Math.round(response.progress_ms/1000),
         }
     });
     })
     this.getAudioDetails()
-    // while (isPlaying = true && counter < 10) {
-    // setTimeout(function() {
-    //     this.getNowPlaying()
-    //     counter++
-    //     }, delayInMilliseconds);
-    // }
 }
 
+  getToken(){
+    var { token } = "abc";
+    var payload = this.props.addToken({ token });
+    this.setState({
+      token: payload.token
+    })
+  }
+
   getAudioDetails() {
-    token = this.props.token[0]
+    this.getToken()
+    token = this.state.token
     spotifyApi.setAccessToken(token)
     var Url = "https://api.spotify.com/v1/audio-analysis/" + `${trackID}`
     $.ajax({
@@ -109,21 +114,24 @@ class Player extends Component {
   }
 
   getPause() {
-    token = this.props.token[0]
+    this.getToken()
+    token = this.state.token
     spotifyApi.setAccessToken(token)
     spotifyApi.pause()
     this.getNowPlaying()
   }
 
   getPlay(){
-    token = this.props.token[0]
+    this.getToken()
+    token = this.state.token
     spotifyApi.setAccessToken(token)
     spotifyApi.play()
     this.getNowPlaying()
   }
 
   me(){
-    token = this.props.token[0]
+    this.getToken()
+    token = this.state.token
     spotifyApi.setAccessToken(token)
     spotifyApi.getMe()
     .then((response) => {
@@ -132,21 +140,24 @@ class Player extends Component {
   }
   
   skipSong(){
-    token = this.props.token[0]
+    this.getToken()
+    token = this.state.token
     spotifyApi.setAccessToken(token)
     spotifyApi.skipToNext()
     this.getNowPlaying()
   }
 
   previousSong(){
-    token = this.props.token[0]
+    this.getToken()
+    token = this.state.token
     spotifyApi.setAccessToken(token)
     spotifyApi.skipToPrevious()
     this.getNowPlaying()
   }
 
   seek(){
-    token = this.props.token[0]
+    this.getToken()
+    token = this.state.token
     spotifyApi.setAccessToken(token)
     var newPosition = trackProgress + 30000
     var Url = "https://api.spotify.com/v1/me/player/seek?position_ms=" + `${newPosition}`
@@ -183,15 +194,16 @@ class Player extends Component {
     })
   }
 
-  // songInfo(object){
-  //  debugger
-  // }
-
  
 
-    // componentDidMount(){
-    //     this.search()
-    // }
+    componentDidMount(){
+      this.interval = setInterval(() => this.getNowPlaying(), 1000);
+    }
+
+    componentWillUnmount() {
+      clearInterval(this.interval);
+    }
+
   
     
   render() {
@@ -216,7 +228,7 @@ class Player extends Component {
             </div>
         {/* </div> */}
         </div>
-        <div class="btn-group d-flex justify-content-center">
+        <div class="btn-group d-flex justify-content-center mb-md-3">
             <div class="row">
             <div class="col-lg-3 d-flex justify-content-center">
                 <button class="btn btn-default" onClick={() => this.previousSong()}>
