@@ -2,10 +2,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
 import $ from 'jquery';
-import form from "./Form";
 
 var token;
-var href;
 
 export class Search extends Component {
   constructor() {
@@ -77,7 +75,7 @@ seeSong(event){
           {this.state.searchObject.map(object => (
             <div class="col-sm-3 text-white">
              <h3>
-              <img src={object.album.images[0].url} style={{ height: 150 }}/>
+              <img src={object.album.images[0].url} alt="Album Art" style={{ height: 150 }}/>
               <br></br>
               Song Title: {object.name}
               <br></br>

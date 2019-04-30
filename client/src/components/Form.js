@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import uuidv1 from "uuid";
 import { addToken } from "../js/actions/index";
-import { Search } from "./Search";
 
-debugger
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -46,7 +43,6 @@ class ConnectedForm extends Component {
   }
 
   render() {
-    var { token } = this.state;
     return (
     <div onLoad={this.Login} class="d-flex justify-content-center">
     {/* <div>

@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-import Token from "./Token.js";
-import Form from "./Form.js";
 import Player from "./Player";
 import Search from "./Search";
-import SpotifyWebApi from 'spotify-web-api-js';
 import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
-
-const spotifyApi = new SpotifyWebApi();
+import $ from 'jquery';
 
 
 class Home extends Component {
@@ -19,7 +15,6 @@ class Home extends Component {
     }
   }
 
-  
 
   render () {
     return(
@@ -39,6 +34,7 @@ class Home extends Component {
     )
   }
 }
+
 
 function mapStateToProps(state) {
   return {

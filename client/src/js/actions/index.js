@@ -1,8 +1,3 @@
-import { ADD_TOKEN } from "../constants/action-types";
-import SpotifyWebApi from 'spotify-web-api-js';
-
-const spotifyApi = new SpotifyWebApi();
-
 function getHashParams() {
   var hashParams = {};
   var e, r = /([^&;=]+)=?([^&;]*)/g,

@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 import SpotifyWebApi from 'spotify-web-api-js';
 import $ from 'jquery';
-import Search from './Search'
 import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
-import form from "./Form";
+
 
 
 
 const spotifyApi = new SpotifyWebApi();
 var trackID;
-var ID;
 var trackProgress;
-var searchObject;
-var token 
-var isPlaying = true;
+var token ;
+var minutes;
+var seconds;
+
+
 
 
 class Player extends Component {
@@ -24,7 +23,7 @@ class Player extends Component {
     
     this.state = {
       loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: '', trackProgress: "" },
+      nowPlaying: { name: 'Not Checked', albumArt: '', trackProgress: 0, minutes: 0, seconds: 0 },
       trackData: {
         key: "",
         bpm: ""
@@ -56,12 +55,14 @@ class Player extends Component {
     spotifyApi.getMyCurrentPlaybackState()
     .then((response) => {
     trackID = response.item.id
-    trackProgress = response.progress_ms*1000
+    trackProgress = response.progress_ms/1000
     this.setState({
         nowPlaying: { 
         name: response.item.name, 
         albumArt: response.item.album.images[0].url,
-        trackProgress: Math.round(response.progress_ms/1000),
+        trackProgress: response.progress_ms/1000,
+        minutes: Math.floor(trackProgress / 60),
+        seconds: Math.floor(trackProgress -  (Math.floor(trackProgress/60) * 60))
         }
     });
     })
@@ -81,29 +82,17 @@ class Player extends Component {
     token = this.state.token
     spotifyApi.setAccessToken(token)
     var Url = "https://api.spotify.com/v1/audio-analysis/" + `${trackID}`
-    $.ajax({
-      url: Url,
+    fetch(Url, {
+      method: "GET",
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin",
       headers: {
         'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json"
       },
-      type: "GET",
-      contentType: JSON,
-      // success: function(data){
-      //   this.setState({
-      //     trackData: {
-      //       key: data.track.key,
-      //       bpm: data.track.tempo
-      //     }
-      //   })
-      //   debugger
-      //   console.log(data)
-      // },
-      // error: function(data){
-      //   debugger
-      //   console.log(data.responseText)
-      // }
-    })
-    .then ((response) => {
+    }).then(response => response.json())
+    .then((response) => {
       this.setState({
         trackData: {
           key: response.track.key,
@@ -129,16 +118,6 @@ class Player extends Component {
     this.getNowPlaying()
   }
 
-  me(){
-    this.getToken()
-    token = this.state.token
-    spotifyApi.setAccessToken(token)
-    spotifyApi.getMe()
-    .then((response) => {
-      ID = response.id
-    })
-  }
-  
   skipSong(){
     this.getToken()
     token = this.state.token
@@ -155,44 +134,44 @@ class Player extends Component {
     this.getNowPlaying()
   }
 
-  seek(){
-    this.getToken()
-    token = this.state.token
-    spotifyApi.setAccessToken(token)
-    var newPosition = trackProgress + 30000
-    var Url = "https://api.spotify.com/v1/me/player/seek?position_ms=" + `${newPosition}`
-    $.ajax({
-    url: Url,
-    headers: {
-      'Authorization': `Bearer ${token}`,
-    },
-      type: "PUT",
-      contentType: JSON,
-      success: function(data){
-        console.log("success")
-      },
-      error: function(error){
-        console.log(`Error is ${error}`)
-      }
-    })
-  }
+  // seek(){
+  //   this.getToken()
+  //   token = this.state.token
+  //   spotifyApi.setAccessToken(token)
+  //   var newPosition = trackProgress + 30000
+  //   var Url = "https://api.spotify.com/v1/me/player/seek?position_ms=" + `${newPosition}`
+  //   $.ajax({
+  //   url: Url,
+  //   headers: {
+  //     'Authorization': `Bearer ${token}`,
+  //   },
+  //     type: "PUT",
+  //     contentType: JSON,
+  //     success: function(data){
+  //       console.log("success")
+  //     },
+  //     error: function(error){
+  //       console.log(`Error is ${error}`)
+  //     }
+  //   })
+  // }
 
-  search(){
-    $.ajax({
-      url: "https://api.spotify.com/v1/search?q=abba&type=track&market=US&offset=0",
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-      type: "GET",
-      contentType: JSON,
-    })
-    .then ((data) => {
-      debugger
-        this.setState({
-            searchObject: data.tracks.items
-        })
-    })
-  }
+  // search(){
+  //   $.ajax({
+  //     url: "https://api.spotify.com/v1/search?q=abba&type=track&market=US&offset=0",
+  //     headers: {
+  //       'Authorization': `Bearer ${token}`,
+  //     },
+  //     type: "GET",
+  //     contentType: JSON,
+  //   })
+  //   .then ((data) => {
+  //     debugger
+  //       this.setState({
+  //           searchObject: data.tracks.items
+  //       })
+  //   })
+  // }
 
  
 
@@ -215,7 +194,7 @@ class Player extends Component {
             Now Playing: { this.state.nowPlaying.name }
             </div>
             <div class="col-sm-12 d-flex justify-content-center">
-            Current Position: { this.state.nowPlaying.trackProgress} seconds
+            Current Position: {this.state.nowPlaying.minutes} minutes { this.state.nowPlaying.seconds} seconds
             </div>
             <div class="col-sm-12 d-flex justify-content-center">
             Key: { this.state.trackData.key }  
@@ -224,7 +203,7 @@ class Player extends Component {
             BPM: { this.state.trackData.bpm } 
             </div>
             <div class="col-sm-12 d-flex justify-content-center mb-md-3">
-            <img src={this.state.nowPlaying.albumArt} style={{ height: 250, outerWidth: 250 }}/>
+            <img src={this.state.nowPlaying.albumArt} alt="Album Art" style={{ height: 250, outerWidth: 250 }}/>
             </div>
         {/* </div> */}
         </div>
@@ -232,30 +211,25 @@ class Player extends Component {
             <div class="row">
             <div class="col-lg-3 d-flex justify-content-center">
                 <button class="btn btn-default" onClick={() => this.previousSong()}>
-                <img src="https://image.flaticon.com/icons/svg/149/149113.svg" style={{ height: 50}}/>
+                <img src="https://image.flaticon.com/icons/svg/149/149113.svg" alt="Previous Song" style={{ height: 50}}/>
                 </button>
             </div>
             <div class="col-lg-3 d-flex justify-content-center" >
                 <button class="btn btn-success" onClick={() => this.getPlay()}>
-                    <img src="https://image.flaticon.com/icons/svg/0/375.svg" style={{ height: 50}}/>
+                    <img src="https://image.flaticon.com/icons/svg/0/375.svg" alt="Play" style={{ height: 50}}/>
                 </button>
             </div>
             <div class="col-lg-3 d-flex justify-content-center">
                 <button class="btn btn-danger" onClick={() => this.getPause()}>
-                <img src="https://www.flaticon.com/premium-icon/icons/svg/1709/1709943.svg" style={{ height: 50}}/>
+                <img src="https://www.flaticon.com/premium-icon/icons/svg/1709/1709943.svg" alt="Pause" style={{ height: 50}}/>
                 </button>
             </div>
             <div class="col-lg-3 d-flex justify-content-center">
                 <button class="btn btn-default" onClick={() => this.skipSong()}>
-                <img src="https://image.flaticon.com/icons/svg/149/149112.svg" style={{ height: 50}}/>
+                <img src="https://image.flaticon.com/icons/svg/149/149112.svg" alt="Skip Song" style={{ height: 50}}/>
                 </button>
             </div>
-            </div>
-            {/* <div>
-                <button onClick={() => this.me()}>
-                    User Info
-                </button>
-            </div> */}
+          </div>
         </div>
       </div>
     );
