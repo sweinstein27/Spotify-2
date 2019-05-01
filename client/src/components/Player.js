@@ -30,23 +30,23 @@ class Player extends Component {
       },
       searchObject: [],
       selectedSongID: "",
-      token: []
+      token: localStorage.getItem(token) || []
     }
     this.getAudioDetails = this.getAudioDetails.bind(this);
   }
 
 
-  getHashParams() {
-    var hashParams = {};
-    var e, r = /([^&;=]+)=?([^&;]*)/g,
-      q = window.location.hash.substring(1);
-    e = r.exec(q)
-    while (e) {
-      hashParams[e[1]] = decodeURIComponent(e[2]);
-      e = r.exec(q);
-    }
-    return hashParams;
-  }
+  // getHashParams() {
+  //   var hashParams = {};
+  //   var e, r = /([^&;=]+)=?([^&;]*)/g,
+  //     q = window.location.hash.substring(1);
+  //   e = r.exec(q)
+  //   while (e) {
+  //     hashParams[e[1]] = decodeURIComponent(e[2]);
+  //     e = r.exec(q);
+  //   }
+  //   return hashParams;
+  // }
 
   getNowPlaying(){
     this.getToken()
@@ -74,6 +74,8 @@ class Player extends Component {
     var payload = this.props.addToken({ token });
     this.setState({
       token: payload.token
+    }, () => {
+      localStorage.setItem(token, token)
     })
   }
 
@@ -112,6 +114,7 @@ class Player extends Component {
 
   getPlay(){
     this.getToken()
+    debugger
     token = this.state.token
     spotifyApi.setAccessToken(token)
     spotifyApi.play()
