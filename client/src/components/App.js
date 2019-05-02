@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import Home from "./Home.js"
 import Header from "./Header.js";
+import { connect } from "react-redux";
 
 
 class App extends React.Component {
@@ -14,8 +15,10 @@ class App extends React.Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+      token: state.token
+    };
+  }
 
-
-
-
-export default App;
+export default connect(mapStateToProps)(App)

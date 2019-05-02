@@ -113,6 +113,7 @@ app.get('/callback', function(req, res) {
             error: 'invalid_token'
           }));
       }
+      debugger
     });
   }
 });
