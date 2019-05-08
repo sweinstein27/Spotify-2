@@ -10,9 +10,10 @@ import { addToken } from "../js/actions/index";
 const spotifyApi = new SpotifyWebApi();
 var trackID;
 var trackProgress;
-var token ;
+var tokenval ;
 var minutes;
 var seconds;
+var Url;
 
 
 
@@ -22,15 +23,14 @@ class Player extends Component {
     super();
     
     this.state = {
-      loggedIn: token ? true : false,
-      nowPlaying: { name: 'Not Checked', albumArt: '', trackProgress: 0, minutes: 0, seconds: 0 },
+      loggedIn: tokenval ? true : false,
+      nowPlaying: { name: 'Not Checked', albumArt: '', trackProgress: 0, minutes: 0, seconds: 0, trackID: "" },
       trackData: {
         key: "",
         bpm: ""
       },
       searchObject: [],
       selectedSongID: "",
-      token: localStorage.getItem(token) || []
     }
     this.getAudioDetails = this.getAudioDetails.bind(this);
   }
@@ -49,48 +49,41 @@ class Player extends Component {
   // }
 
   getNowPlaying(){
-    this.getToken()
-    token = this.state.token
-    spotifyApi.setAccessToken(token)
+    tokenval = this.props.token[0]
+    spotifyApi.setAccessToken(tokenval)
     spotifyApi.getMyCurrentPlaybackState()
     .then((response) => {
-    trackID = response.item.id
-    trackProgress = response.progress_ms/1000
+    trackID = response.item.id || "0"
+    trackProgress = response.progress_ms/1000 || "0"
     this.setState({
         nowPlaying: { 
         name: response.item.name, 
         albumArt: response.item.album.images[0].url,
         trackProgress: response.progress_ms/1000,
         minutes: Math.floor(trackProgress / 60),
-        seconds: Math.floor(trackProgress -  (Math.floor(trackProgress/60) * 60))
-        }
+        seconds: Math.floor(trackProgress -  (Math.floor(trackProgress/60) * 60)),
+        trackID: response.item.id
+        
+      }
     });
     })
     this.getAudioDetails()
 }
 
-  getToken(){
-    var { token } = "abc";
-    var payload = this.props.addToken({ token });
-    this.setState({
-      token: payload.token
-    }, () => {
-      localStorage.setItem(token, token)
-    })
-  }
+
 
   getAudioDetails() {
-    this.getToken()
-    token = this.state.token
-    spotifyApi.setAccessToken(token)
-    var Url = "https://api.spotify.com/v1/audio-analysis/" + `${trackID}`
+    tokenval = this.props.token[0]
+    spotifyApi.setAccessToken(tokenval)
+    trackID = "11dFghVXANMlKmJXsNCbNl";
+    Url = "https://api.spotify.com/v1/audio-analysis/" + `${trackID}`
     fetch(Url, {
       method: "GET",
       mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
       credentials: "same-origin",
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${tokenval}`,
         "Content-Type": "application/json"
       },
     }).then(response => response.json())
@@ -105,34 +98,29 @@ class Player extends Component {
   }
 
   getPause() {
-    this.getToken()
-    token = this.state.token
-    spotifyApi.setAccessToken(token)
+    tokenval = this.props.token[0]
+    spotifyApi.setAccessToken(tokenval)
     spotifyApi.pause()
     this.getNowPlaying()
   }
 
   getPlay(){
-    this.getToken()
-    debugger
-    token = this.state.token
-    spotifyApi.setAccessToken(token)
+    tokenval = this.props.token[0]
+    spotifyApi.setAccessToken(tokenval)
     spotifyApi.play()
     this.getNowPlaying()
   }
 
   skipSong(){
-    this.getToken()
-    token = this.state.token
-    spotifyApi.setAccessToken(token)
+    tokenval = this.props.token[0]
+    spotifyApi.setAccessToken(tokenval)
     spotifyApi.skipToNext()
     this.getNowPlaying()
   }
 
   previousSong(){
-    this.getToken()
-    token = this.state.token
-    spotifyApi.setAccessToken(token)
+    tokenval = this.props.token[0]
+    spotifyApi.setAccessToken(tokenval)
     spotifyApi.skipToPrevious()
     this.getNowPlaying()
   }

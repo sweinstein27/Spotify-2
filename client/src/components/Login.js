@@ -3,13 +3,14 @@ import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
 
 class Login extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
     
         this.state = {
           tokenval: ""
         }
         this.login = this.login.bind(this);
+        this.saveToken = this.saveToken.bind(this);
     }
 
     login(){
@@ -18,22 +19,28 @@ class Login extends Component {
     }
 
     saveToken(){
-        // var { token } = "abc";
-        // // var payload = this.props.addToken({ token });
-        // this.state.token = payload.token
+        debugger
+        var { token } = "abc";
+        var payload = this.props.addToken({ token });
+        this.state.token = payload.token
     }
 
-    componentWillMount(){
-        this.saveToken()
-    }
+    // componentWillMount(){
+    //     this.saveToken()
+    // }
 
    
    render(){
         return(
             <div>
-                <button onClick={() => this.login()}>
-                    Log
-                </button>
+                <div>
+                    <button onClick={() => this.login()}>
+                        Log
+                    </button>
+                </div>
+                <div>
+                    <h1> hi </h1>
+                </div>
             </div>
             
         )
@@ -47,4 +54,6 @@ const mapStateToProps = (state) => {
     };
   }
   
-  export default connect(mapStateToProps)(Login);
+//   export default connect(mapStateToProps)(Login);
+
+export default Login;

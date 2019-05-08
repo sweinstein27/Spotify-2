@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
 import $ from 'jquery';
 
+var token;
 
 class Home extends Component {
   constructor() {
@@ -15,19 +16,32 @@ class Home extends Component {
     }
   }
 
+  getToken(){
+    var { token } = "abc";
+    debugger
+    var payload = this.props.addToken({ token });
+    this.setState({
+      token: payload.token
+    }, () => {
+      localStorage.setItem(token, token)
+    })
+  }
+
+  componentDidMount(){
+    this.getToken();
+  }
+
+
 
   render () {
     return(
-      <div className="app">
-        <div>
-                <a href='http://localhost:8888' class="text-white"> Login to Spotify </a>
-        </div>
+      <div>
         <div>
           <div>
-            <Player/>
+            <Player token={this.state.token} />
           </div>
           <div>
-            <Search/>
+            <Search token={this.state.token} />
           </div>
         </div>
       </div>

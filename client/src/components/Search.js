@@ -4,28 +4,22 @@ import { addToken } from "../js/actions/index";
 import $ from 'jquery';
 
 var token;
+var value;
 
 export class Search extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       searchObject: [],
       query: "jude"
     }
     this.seeSong = this.seeSong.bind(this);
+    this.switchSong = this.switchSong.bind(this);
   }
 
-  getToken(){
-    var { token } = "abc";
-    var payload = this.props.addToken({ token });
-    this.setState({
-      token: payload.token
-    })
-  }
 
   search(){
-    this.getToken()
-    token = this.state.token
+    token = this.props.token[0]
     var query = prompt("Please enter track name") || this.state.query
     $.ajax({
       url: "https://api.spotify.com/v1/search?" + "q=name:" + `${query}` + "&type=track",
@@ -40,6 +34,10 @@ export class Search extends Component {
             searchObject: data.tracks.items
         })
     })
+}
+
+switchSong(value) {
+  debugger
 }
 
 seeSong(event){
@@ -81,7 +79,10 @@ seeSong(event){
               <br></br>
               Artist: {object.artists[0].name}
               <br></br>
-              <a href={object.preview_url}>Preview Song</a>
+              <button value={object.id} onClick={() => this.switchSong(value)} >
+                Play Song
+                Object id: {object.id}
+              </button>
               <br></br>
             </h3>
             </div>

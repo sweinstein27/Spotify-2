@@ -17,6 +17,7 @@ function Header() {
               <Link to="/"> Login </Link>
               <Link to="/about"> About </Link>
               <Link to="/user"> User Info </Link>
+              <Link to="/home"> Home</Link>
             </div>
           </div>
           </span>
@@ -25,6 +26,7 @@ function Header() {
           <Route path="/" exact component={Login} />
           <Route path="/about" exact component={About} />
           <Route path="/user" exact component={User} />
+          <Route path="/home" component={Home} />
       </Router>
     );
 }
