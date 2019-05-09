@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import About from "./About";
 import Home from "./Home";
-import User from "./User";
 import Login from "./Login"
 
 function Header() {
@@ -15,9 +14,9 @@ function Header() {
           <div class="navbar-nav">
             <div class="nav-item">
               <Link to="/"> Login </Link>
-              <Link to="/about"> About </Link>
-              <Link to="/user"> User Info </Link>
               <Link to="/home"> Home</Link>
+              <Link to="/about"> About </Link>
+              
             </div>
           </div>
           </span>
@@ -25,7 +24,6 @@ function Header() {
           </div>
           <Route path="/" exact component={Login} />
           <Route path="/about" exact component={About} />
-          <Route path="/user" exact component={User} />
           <Route path="/home" component={Home} />
       </Router>
     );

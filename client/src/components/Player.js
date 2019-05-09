@@ -35,19 +35,6 @@ class Player extends Component {
     this.getAudioDetails = this.getAudioDetails.bind(this);
   }
 
-
-  // getHashParams() {
-  //   var hashParams = {};
-  //   var e, r = /([^&;=]+)=?([^&;]*)/g,
-  //     q = window.location.hash.substring(1);
-  //   e = r.exec(q)
-  //   while (e) {
-  //     hashParams[e[1]] = decodeURIComponent(e[2]);
-  //     e = r.exec(q);
-  //   }
-  //   return hashParams;
-  // }
-
   getNowPlaying(){
     tokenval = this.props.token[0]
     spotifyApi.setAccessToken(tokenval)
@@ -125,47 +112,6 @@ class Player extends Component {
     this.getNowPlaying()
   }
 
-  // seek(){
-  //   this.getToken()
-  //   token = this.state.token
-  //   spotifyApi.setAccessToken(token)
-  //   var newPosition = trackProgress + 30000
-  //   var Url = "https://api.spotify.com/v1/me/player/seek?position_ms=" + `${newPosition}`
-  //   $.ajax({
-  //   url: Url,
-  //   headers: {
-  //     'Authorization': `Bearer ${token}`,
-  //   },
-  //     type: "PUT",
-  //     contentType: JSON,
-  //     success: function(data){
-  //       console.log("success")
-  //     },
-  //     error: function(error){
-  //       console.log(`Error is ${error}`)
-  //     }
-  //   })
-  // }
-
-  // search(){
-  //   $.ajax({
-  //     url: "https://api.spotify.com/v1/search?q=abba&type=track&market=US&offset=0",
-  //     headers: {
-  //       'Authorization': `Bearer ${token}`,
-  //     },
-  //     type: "GET",
-  //     contentType: JSON,
-  //   })
-  //   .then ((data) => {
-  //     debugger
-  //       this.setState({
-  //           searchObject: data.tracks.items
-  //       })
-  //   })
-  // }
-
- 
-
     componentDidMount(){
       this.interval = setInterval(() => this.getNowPlaying(), 1000);
     }
@@ -174,8 +120,6 @@ class Player extends Component {
       clearInterval(this.interval);
     }
 
-  
-    
   render() {
     return (
       <div className="App">

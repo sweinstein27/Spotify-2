@@ -25,9 +25,6 @@ class Login extends Component {
         this.state.token = payload.token
     }
 
-    // componentWillMount(){
-    //     this.saveToken()
-    // }
 
    
    render(){
@@ -35,11 +32,8 @@ class Login extends Component {
             <div>
                 <div>
                     <button onClick={() => this.login()}>
-                        Log
+                        Login
                     </button>
-                </div>
-                <div>
-                    <h1> hi </h1>
                 </div>
             </div>
             

@@ -5,6 +5,12 @@ import $ from 'jquery';
 
 var token;
 var value;
+var token; 
+var context_uri;
+var data;
+var query;
+var Url;
+
 
 export class Search extends Component {
   constructor(props) {
@@ -20,24 +26,48 @@ export class Search extends Component {
 
   search(){
     token = this.props.token[0]
-    var query = prompt("Please enter track name") || this.state.query
-    $.ajax({
-      url: "https://api.spotify.com/v1/search?" + "q=name:" + `${query}` + "&type=track",
+    query = prompt("Please enter album name") || this.state.query
+    Url = "https://api.spotify.com/v1/search?" + "q=name:" + `${query}` + "&type=album"
+    debugger
+    fetch(Url,{
+      method: "GET",
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin",
       headers: {
         'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json"
       },
-      type: "GET",
-      contentType: JSON,
-    })
-    .then ((data) => {
+    }).then(response => response.json())
+    .then ((response) => {
+      debugger
         this.setState({
-            searchObject: data.tracks.items
+            searchObject: response.albums.items
         })
     })
 }
 
-switchSong(value) {
-  debugger
+switchSong(event) {
+  token = this.props.token[0]
+  context_uri = event.target.value
+  data = {context_uri: context_uri}
+  var Url = "https://api.spotify.com/v1/me/player/play" 
+    fetch(Url, {
+      method: "PUT",
+      body: JSON.stringify(data),
+      mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "same-origin",
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        "Content-Type": "application/json"
+      },
+    }).then(
+      this.setState({
+        searchObject: []
+      })
+    )
+    
 }
 
 seeSong(event){
@@ -73,15 +103,14 @@ seeSong(event){
           {this.state.searchObject.map(object => (
             <div class="col-sm-3 text-white">
              <h3>
-              <img src={object.album.images[0].url} alt="Album Art" style={{ height: 150 }}/>
+              <img src={object.images[0].url} alt="Album Art" style={{ height: 150 }}/>
               <br></br>
               Song Title: {object.name}
               <br></br>
               Artist: {object.artists[0].name}
               <br></br>
-              <button value={object.id} onClick={() => this.switchSong(value)} >
+              <button class="btn-group d-flex" id="trackvalurl" value={object.uri} onClick={(event) => this.switchSong(event)} >
                 Play Song
-                Object id: {object.id}
               </button>
               <br></br>
             </h3>
