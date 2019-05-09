@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Player from "./Player";
-import Search from "./Search";
+import Player from "../containers/Player";
+import Search from "../containers/Search";
 import { connect } from "react-redux";
 import { addToken } from "../js/actions/index";
 import $ from 'jquery';
@@ -12,7 +12,7 @@ class Home extends Component {
     super();
 
     this.state = {
-      tokenValue: ""
+      
     }
   }
 
