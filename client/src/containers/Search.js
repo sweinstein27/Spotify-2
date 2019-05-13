@@ -26,8 +26,8 @@ export class Search extends Component {
 
   search(){
     token = this.props.token[0]
-    query = prompt("Please enter album name") || this.state.query
-    Url = "https://api.spotify.com/v1/search?" + "q=name:" + `${query}` + "&type=album"
+    query = prompt("Please enter track name") || this.state.query
+    Url = encodeURI("https://api.spotify.com/v1/search?" + "q=" + `${query}` + "&type=track")
     debugger
     fetch(Url,{
       method: "GET",
@@ -42,15 +42,16 @@ export class Search extends Component {
     .then ((response) => {
       debugger
         this.setState({
-            searchObject: response.albums.items
+            searchObject: response.tracks.items
         })
     })
 }
 
 switchSong(event) {
   token = this.props.token[0]
-  context_uri = event.target.value
+  context_uri = "spotify:album:" + `${event.target.value}`
   data = {context_uri: context_uri}
+  debugger
   var Url = "https://api.spotify.com/v1/me/player/play" 
     fetch(Url, {
       method: "PUT",
@@ -62,6 +63,8 @@ switchSong(event) {
         'Authorization': `Bearer ${token}`,
         "Content-Type": "application/json"
       },
+    }).then ((response) => {
+      debugger
     }).then(
       this.setState({
         searchObject: []
@@ -103,14 +106,14 @@ seeSong(event){
           {this.state.searchObject.map(object => (
             <div class="col-sm-3 text-white">
              <h3>
-              <img src={object.images[0].url} alt="Album Art" style={{ height: 150 }}/>
+              <img src={object.album.images[0].url} alt="Album Art" style={{ height: 150 }}/>
               <br></br>
               Song Title: {object.name}
               <br></br>
               Artist: {object.artists[0].name}
               <br></br>
-              <button class="btn-group d-flex" id="trackvalurl" value={object.uri} onClick={(event) => this.switchSong(event)} >
-                Play Song
+              <button class="btn-group d-flex" id="trackvalurl" value={object.album.id} onClick={(event) => this.switchSong(event)} >
+                Play Album
               </button>
               <br></br>
             </h3>
