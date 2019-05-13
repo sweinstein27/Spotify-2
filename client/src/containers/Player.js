@@ -62,7 +62,6 @@ class Player extends Component {
   getAudioDetails() {
     tokenval = this.props.token[0]
     spotifyApi.setAccessToken(tokenval)
-    trackID = "11dFghVXANMlKmJXsNCbNl";
     Url = "https://api.spotify.com/v1/audio-analysis/" + `${trackID}`
     fetch(Url, {
       method: "GET",
