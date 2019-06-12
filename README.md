@@ -1,4 +1,4 @@
-Mockify
+Mockify app
 
 Mockify is a Web based music player that utilizes the Spotify API.
 
