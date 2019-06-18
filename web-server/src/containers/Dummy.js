@@ -3,24 +3,39 @@ import { connect } from "react-redux";
 import fetchSearches from "../services/SearchService"
 
 class Dummy extends Component {
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+          searches: []
+        }
+        
+    }
 
     getSearches(){
-        fetch("http://localhost:3001/api/searches",{
-          mode: "no-cors",
-          accept: "application/json"
-        })
+        fetch("http://localhost:3001/api/searches")
+        .then(response => response.json())
         .then(response => {
-            debugger
+            this.setState({
+                searches:response
+            })
         })
-      }
+    }
 
 
     render() {
         return(
             <div>
-                <button onClick={() => this.getSearches()}>
-                    search query
-                </button>
+                <div>
+                    <button onClick={() => this.getSearches()}>
+                        search query
+                    </button>
+                </div>
+                <div>
+                   {this.state.searches.map(o => {
+                       query: {o.query}
+                   })}
+                </div>
             </div>
         )
     }
