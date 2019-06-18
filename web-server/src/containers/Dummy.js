@@ -28,13 +28,17 @@ class Dummy extends Component {
             <div>
                 <div>
                     <button onClick={() => this.getSearches()}>
-                        search query
+                        Get All Query
                     </button>
                 </div>
                 <div>
-                   {this.state.searches.map(o => {
-                       query: {o.query}
-                   })}
+                   {this.state.searches.map(object => (
+                       <div class="text-white">
+                        <h3>
+                            Query: {object.query}
+                        </h3>
+                       </div>
+                   ))}
                 </div>
             </div>
         )
