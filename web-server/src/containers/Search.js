@@ -50,7 +50,11 @@ saveSong() {
   debugger
   fetch("http://localhost:3001/api/searches",{
     method: "POST",
-    data: { query: JSON.stringify(query) }
+    body: JSON.stringify(query),
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+  }
   })
 }
 
