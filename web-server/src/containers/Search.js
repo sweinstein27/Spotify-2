@@ -28,7 +28,6 @@ export class Search extends Component {
     token = this.props.token[0]
     query = prompt("Please enter track name") || this.state.query
     Url = encodeURI("https://api.spotify.com/v1/search?" + "q=" + `${query}` + "&type=track")
-    debugger
     fetch(Url,{
       method: "GET",
       mode: "cors", // no-cors, cors, *same-origin
@@ -40,11 +39,19 @@ export class Search extends Component {
       },
     }).then(response => response.json())
     .then ((response) => {
-      debugger
         this.setState({
             searchObject: response.tracks.items
         })
     })
+    this.saveSong()
+}
+
+saveSong() {
+  debugger
+  fetch("http://localhost:3001/api/searches",{
+    method: "POST",
+    data: { query: JSON.stringify(query) }
+  })
 }
 
 switchSong(event) {
@@ -94,7 +101,6 @@ seeSong(event){
   render() {
     return (
       <div>
-        searches: {this.state.searches}
         <div class="btn-group d-flex justify-content-center">
         
        <button class="btn btn-default  mb-md-3" onClick={() => this.search()}>

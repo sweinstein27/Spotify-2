@@ -127,7 +127,6 @@ class Player extends Component {
         <div class="SongInfo text-white">
         {/* <div class="d-flex justify-content-center"> */}
             <div class="col-sm-12 d-flex justify-content-center">
-            Searches: {this.state.searches}
             Now Playing: { this.state.nowPlaying.name }
             </div>
             <div class="col-sm-12 d-flex justify-content-center">
