@@ -4,7 +4,7 @@ import About from "./About";
 import Home from "./Home";
 import Login from "../containers/Login"
 import Contact from "./Contact"
-import Dummy from "../containers/Dummy"
+import Searches from '../containers/Searches';
 
 function Header() {
     return (
@@ -19,7 +19,7 @@ function Header() {
               <Link to="/home"> Home</Link>
               <Link to="/about"> About </Link>
               <Link to="/contact"> Contact </Link>
-              <Link to="/Dummy"> Dummy </Link>
+              <Link to="/searches"> Searches </Link>
             </div>
           </div>
           </span>
@@ -29,7 +29,7 @@ function Header() {
           <Route path="/about" exact component={About} />
           <Route path="/home" component={Home} />
           <Route path="/contact" component={Contact} />
-          <Route path="/dummy" component={Dummy} />
+          <Route path="/searches" component={Searches} />
       </Router>
     );
 }

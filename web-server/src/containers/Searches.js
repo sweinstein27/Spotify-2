@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from "react-redux";
 import fetchSearches from "../services/SearchService"
 
-class Dummy extends Component {
+class Searches extends Component {
     constructor(props) {
         super(props);
     
@@ -28,7 +28,7 @@ class Dummy extends Component {
             <div>
                 <div>
                     <button onClick={() => this.getSearches()}>
-                        Get All Query
+                        Get All Searches
                     </button>
                 </div>
                 <div>
@@ -45,4 +45,4 @@ class Dummy extends Component {
     }
 
 }
-export default Dummy;
+export default Searches;

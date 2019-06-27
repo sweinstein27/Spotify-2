@@ -14,12 +14,10 @@ class Login extends Component {
     }
 
     login(){
-        debugger
         window.location.href = "http://localhost:8888"
     }
 
     saveToken(){
-        debugger
         var { token } = "abc";
         var payload = this.props.addToken({ token });
         this.state.token = payload.token
@@ -48,6 +46,5 @@ const mapStateToProps = (state) => {
     };
   }
   
-//   export default connect(mapStateToProps)(Login);
 
 export default Login;

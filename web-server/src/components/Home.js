@@ -30,15 +30,8 @@ class Home extends Component {
   }
 
   componentDidMount(){
-    // this.getToken();
-    fetch("http://localhost:3001/api/searches",{
-      mode: "no-cors",
-      accept: "application/json"
-    })
-            .then(response => {
-              debugger
-            } )
-            .then(response => console.log(response))
+    this.getToken();
+    
   }
 
 

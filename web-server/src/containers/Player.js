@@ -113,12 +113,12 @@ class Player extends Component {
   }
 
     componentDidMount(){
-      // this.interval = setInterval(() => this.getNowPlaying(), 1000);
+      this.interval = setInterval(() => this.getNowPlaying(), 1000);
      
     }
 
     componentWillUnmount() {
-      // clearInterval(this.interval);
+      clearInterval(this.interval);
     }
 
   render() {

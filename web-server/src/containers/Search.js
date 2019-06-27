@@ -47,7 +47,6 @@ export class Search extends Component {
 }
 
 saveSong() {
-  debugger
   fetch("http://localhost:3001/api/searches",{
     method: "POST",
     body: JSON.stringify(query),
@@ -62,7 +61,6 @@ switchSong(event) {
   token = this.props.token[0]
   context_uri = "spotify:album:" + `${event.target.value}`
   data = {context_uri: context_uri}
-  debugger
   var Url = "https://api.spotify.com/v1/me/player/play" 
     fetch(Url, {
       method: "PUT",
@@ -75,7 +73,6 @@ switchSong(event) {
         "Content-Type": "application/json"
       },
     }).then ((response) => {
-      debugger
     }).then(
       this.setState({
         searchObject: []
